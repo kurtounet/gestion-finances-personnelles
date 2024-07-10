@@ -1,0 +1,208 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DATA_TRANSACTIONS = void 0;
+var DATA_TRANSACTIONS = [{
+  id: 0,
+  date: "27/11/1982",
+  category: "Alimentation",
+  subcategory: "Auchant",
+  debit: 64.99,
+  credit: 0,
+  countId: 1
+}, {
+  id: 1,
+  date: "27/11/1982",
+  category: "Maison",
+  subcategory: "élétricité",
+  debit: 64.99,
+  credit: 0,
+  countId: 0
+}, {
+  id: 2,
+  date: "27/11/1982",
+  category: "Maison",
+  subcategory: "Loyer",
+  debit: 64.99,
+  credit: 0,
+  countId: 1
+}, {
+  id: 3,
+  date: "27/11/1982",
+  category: "Maison",
+  subcategory: "élétricité",
+  debit: 64.99,
+  credit: 0,
+  countId: 0
+}, {
+  id: 4,
+  date: "01/12/1982",
+  category: "Alimentation",
+  subcategory: "Carrefour",
+  debit: 50.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 5,
+  date: "02/12/1982",
+  category: "Transport",
+  subcategory: "Essence",
+  debit: 40.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 6,
+  date: "03/12/1982",
+  category: "Santé",
+  subcategory: "Pharmacie",
+  debit: 15.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 7,
+  date: "04/12/1982",
+  category: "Loisirs",
+  subcategory: "Cinéma",
+  debit: 20.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 8,
+  date: "05/12/1982",
+  category: "Alimentation",
+  subcategory: "Lidl",
+  debit: 45.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 9,
+  date: "06/12/1982",
+  category: "Maison",
+  subcategory: "Internet",
+  debit: 30.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 10,
+  date: "07/12/1982",
+  category: "Transport",
+  subcategory: "Bus",
+  debit: 10.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 11,
+  date: "08/12/1982",
+  category: "Alimentation",
+  subcategory: "Auchant",
+  debit: 55.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 12,
+  date: "09/12/1982",
+  category: "Santé",
+  subcategory: "Dentiste",
+  debit: 100.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 13,
+  date: "10/12/1982",
+  category: "Loisirs",
+  subcategory: "Théâtre",
+  debit: 25.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 14,
+  date: "11/12/1982",
+  category: "Maison",
+  subcategory: "Eau",
+  debit: 20.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 15,
+  date: "12/12/1982",
+  category: "Transport",
+  subcategory: "Essence",
+  debit: 35.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 16,
+  date: "13/12/1982",
+  category: "Santé",
+  subcategory: "Pharmacie",
+  debit: 25.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 17,
+  date: "14/12/1982",
+  category: "Alimentation",
+  subcategory: "Carrefour",
+  debit: 60.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 18,
+  date: "15/12/1982",
+  category: "Loisirs",
+  subcategory: "Concert",
+  debit: 80.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 19,
+  date: "16/12/1982",
+  category: "Maison",
+  subcategory: "électricité",
+  debit: 50.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 20,
+  date: "17/12/1982",
+  category: "Transport",
+  subcategory: "Train",
+  debit: 70.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 21,
+  date: "18/12/1982",
+  category: "Santé",
+  subcategory: "Opticien",
+  debit: 120.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 22,
+  date: "19/12/1982",
+  category: "Alimentation",
+  subcategory: "Lidl",
+  debit: 40.0,
+  credit: 0,
+  countId: 1
+}, {
+  id: 23,
+  date: "20/12/1982",
+  category: "Loisirs",
+  subcategory: "Parc",
+  debit: 15.0,
+  credit: 0,
+  countId: 0
+}, {
+  id: 24,
+  date: "21/12/1982",
+  category: "Maison",
+  subcategory: "Loyer",
+  debit: 200.0,
+  credit: 0,
+  countId: 1
+}];
+exports.DATA_TRANSACTIONS = DATA_TRANSACTIONS;

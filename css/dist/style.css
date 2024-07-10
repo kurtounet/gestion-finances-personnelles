@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+body header {
+  background-color: rgba(212, 211, 216, 0.699);
+  height: 50px;
+}
+body main aside nav {
+  background-color: #5957b4;
+  color: aliceblue;
+  font-size: large;
+  float: left;
+  height: 100vh;
+  width: 200px;
+}
+body main aside ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+body main section#section-filter {
+  background-color: #5957b4;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+body main section#section-filter select {
+  background-color: #5957b4;
+  width: 150px;
+  border: none;
+  margin: 5px;
+  font-size: medium;
+  color: white;
+}
