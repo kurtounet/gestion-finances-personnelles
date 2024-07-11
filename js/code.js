@@ -13,30 +13,7 @@ new gridjs.Grid({
 
 
 
- function createTransaction(transaction) {
-  const itemTransaction = document.createElement("section");
-  itemTransaction.classList.add("itemTransaction");
-  itemTransaction.innerHTML = `
-  <p id="itemTransactionDate">${transaction.date}</p>
-  <p id="itemTransactionCategory">${transaction.category}</p>
-  <p id="itemTransactionDebit">${transaction.debit}</p>
-  <p id="itemTransactionCredit">${transaction.credit}</p>  
-  <div class="btn-edit-delete">
-    <img
-      id=transaction
-      class="imageEditTransaction"
-      src="assets/images/edit.png"
-      alt="Modifier"
-    />
-    <img
-      id="delete"
-      class="imageDeleteTransaction"
-      src="assets/images/trash.png"
-      alt="supprimer"
-    />
-  </div>
-  <p id="itemTransactionCredit"></p>
-  `;
+ 
 
 
 

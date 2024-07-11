@@ -1,5 +1,5 @@
-// import { Transaction } from "./Models/Transaction.js";
-import { Category } from "./Models/Category.js";
+import { CreateTransaction } from "./function.js";
+
 import { Count } from "./Models/Count.js";
 import { DATA_FILTER_DATE } from "../data/filterDate.js";
 import { DATA_COUNT } from "../data/counts.js";
@@ -7,6 +7,15 @@ import { DATA_CATEGORIES } from "../data/categories.js";
 import { DATA_TRANSACTIONS } from "../data/transactions.js";
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  const SIDE_BARE = document.querySelector("#sidebar");
+  const MAIN = document.querySelector("#main");
+  const TRANSACTIONS_LISTE = document.querySelector("#wrapper");
+  const itemTransactionDate = document.querySelector("#itemTransactionDate");
+  let selectedCount = 0;
+  let selectFilterDate = document.querySelector("#filterDate");
+  let SELECT_FILTER_CATEGORY = document.querySelector("#filterCategory"); //selectFilterCategory = document.querySelector("#filterCategory");
+  let selectFilterSubCategory = document.querySelector("#filterSubCategory");
+
   // CREATIONDE LA COLLECTION DES COMPTES
   let ArrayCount = [];
   DATA_COUNT.forEach((itemCount) => {
@@ -20,15 +29,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ArrayCount.push(count);
   });
 
-  const SIDE_BARE = document.querySelector("#sidebar");
-  const MAIN = document.querySelector("#main");
-  const TRANSACTIONS_LISTE = document.querySelector("#wrapper");
-  const itemTransactionDate = document.querySelector("#itemTransactionDate");
-
-  let selecteFilerDate = document.querySelector("#filterDate");
-  let selecteFilerCategory = document.querySelector("#filterCategory");
-  let selecteFilerSubCategory = document.querySelector("#filterSubCategory");
   /************************FONCTIONS****************************/
+  // Filtre les transactions par date
+  function filterByDate(date) {}
+  function filterByCategory(categoryName) {
+    let transactionCountSelected = ArrayCount[selectedCount].transactions;
+
+    let transactionsfiltred = transactionCountSelected.filter(
+      (transactionCountSelected) =>
+        transactionCountSelected.category === categoryName
+    );
+    console.log(transactionsfiltred);
+    return transactionsfiltred;
+  }
   //charge les filtres
   function loadSelectFilter(select, options) {
     options.forEach(function (option) {
@@ -41,23 +54,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
   //Affiche les transactions
   function showTransactions(transactions) {
-    let arrayTransaction = [];
-    transactions.forEach(function (transaction) {
-      console.log(Object.values(transaction));
-      arrayTransaction.push(Object.values(transaction));
+    let arrayTransactions = document.createElement("div");
+    transactions.forEach(function (item) {
+      console.log(item);
+      arrayTransactions.appendChild(CreateTransaction(item));
+
+      //console.log(Object.values(transaction));
+      // arrayTransaction.push(Object.values(transaction));
     });
-    console.log(arrayTransaction);
+
+    TRANSACTIONS_LISTE.removeChild(TRANSACTIONS_LISTE.firstChild);
+    TRANSACTIONS_LISTE.appendChild(arrayTransactions);
+    /*
     new gridjs.Grid({
       columns: ["id", "date", "catégorie", "sous category", "Débit", "Crédit"],
       data: arrayTransaction,
     }).render(document.getElementById("wrapper"));
+    */
   }
 
   //INITIALISATION
   function init() {
-    selecteFilerDate = loadSelectFilter(selecteFilerDate, DATA_FILTER_DATE);
-    selecteFilerCategory = loadSelectFilter(
-      selecteFilerCategory,
+    selectFilterDate = loadSelectFilter(selectFilterDate, DATA_FILTER_DATE);
+    SELECT_FILTER_CATEGORY = loadSelectFilter(
+      SELECT_FILTER_CATEGORY,
       DATA_CATEGORIES
     );
     /*
@@ -65,26 +85,31 @@ document.addEventListener("DOMContentLoaded", (event) => {
       createTransaction(item);
     })
       */
-    showTransactions(ArrayCount[0].transactions);
+    showTransactions(ArrayCount[selectedCount].transactions);
   }
 
   /************************MAIN****************************/
   init();
   /********************EVENT LISTENER **********************/
-  selecteFilerCategory.addEventListener("change", function () {
-    let selectedIndex = selecteFilerCategory.value;
-    selecteFilerSubCategory = loadSelectFilter(
-      selecteFilerSubCategory,
+  SELECT_FILTER_CATEGORY.addEventListener("change", function () {
+    let selectedIndex = SELECT_FILTER_CATEGORY.value;
+
+    selectFilterSubCategory = loadSelectFilter(
+      selectFilterSubCategory,
       DATA_CATEGORIES[selectedIndex]["subcategories"]
     );
-    console.log(selectedIndex); // selectedValue;
+    let transactionsfiltred = filterByCategory(
+      DATA_CATEGORIES[selectedIndex]["libelle"]
+    );
+    showTransactions(transactionsfiltred);
+    //console.log(selectedIndex); // selectedValue;
   });
-  selecteFilerSubCategory.addEventListener("change", function () {
-    let selectedValue = FILTER_SUB_CATEGORY.value;
-    console.log(selectedValue); // selectedValue;
+  selectFilterSubCategory.addEventListener("change", function () {
+    let selectedValue = selectFilterSubCategory.value;
+    console.log(selectedValue);
   });
-  selecteFilerDate.addEventListener("change", function () {
-    let selectedValue = FILTER_SUB_CATEGORY.value;
-    console.log(selectedValue); // selectedValue;
+  selectFilterDate.addEventListener("change", function () {
+    let selectedValue = DATA_FILTER_DATE.value;
+    console.log(selectedValue);
   });
 });
