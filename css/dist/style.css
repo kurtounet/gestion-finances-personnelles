@@ -31,6 +31,12 @@ body main aside ul {
   display: flex;
   flex-direction: column;
 }
+body main canvas#mychart {
+  display: block;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+}
 body main section#mainContent {
   display: flex;
   flex-direction: column;

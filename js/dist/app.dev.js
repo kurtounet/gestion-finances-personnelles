@@ -2,6 +2,8 @@
 
 var _function = require("./function.js");
 
+var _graph = require("./graph.js");
+
 var _Count = require("./Models/Count.js");
 
 var _filterDate = require("../data/filterDate.js");
@@ -15,6 +17,7 @@ var _transactions = require("../data/transactions.js");
 document.addEventListener("DOMContentLoaded", function (event) {
   var SIDE_BARE = document.querySelector("#sidebar");
   var MAIN = document.querySelector("#main");
+  var CHART = document.querySelector("#mychart");
   var TRANSACTIONS_LISTE = document.querySelector("#wrapper");
   var AMOUN_TOTAL = document.querySelector("#amountTotal");
   var AMOUN_IN_TOTAL = document.querySelector("#amountInTotal");
@@ -66,11 +69,33 @@ document.addEventListener("DOMContentLoaded", function (event) {
       select.appendChild(opt);
     });
     return select;
+  } // prepare
+
+
+  function prepareChart(transactions) {
+    var ArrayLabelCategory = [];
+    var ArraydataCategory = [];
+    var transactionsfiltred = [];
+    transactions.forEach(function (item) {
+      ArrayLabelCategory.push(item.category); //data pour le graphe
+      // 1.Filtrer les transactions par category
+
+      transactionsfiltred = filterByCategory(item.category.categoryName); // 2.Faire la somme des montants
+      // 3.afficher le graphe
+      // transactionsfiltred = filterByCategory(item.category.categoryName);
+      // ArraydataCategory.push(item.amount);
+    });
+    CHART.remove();
+    var chart = document.createElement("canvas");
+    chart.setAttribute("id", "mychart");
+    document.getElementById("graphParent").appendChild(chart);
+    (0, _graph.showChart)(ArrayLabelCategory, ArraydataCategory);
   } //AFFICHE LES TRANSACTION
 
 
   function showTransactions(transactions) {
     sumTotalTransactions(transactions);
+    prepareChart(transactions);
     TRANSACTIONS_LISTE.removeChild(TRANSACTIONS_LISTE.firstChild);
     var arrayTransactionsHtml = document.createElement("div");
     transactions.forEach(function (item) {

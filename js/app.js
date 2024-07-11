@@ -1,5 +1,5 @@
 import { CreateTransaction } from "./function.js";
-
+import { showChart } from "./graph.js";
 import { Count } from "./Models/Count.js";
 import { DATA_FILTER_DATE } from "../data/filterDate.js";
 import { DATA_COUNT } from "../data/counts.js";
@@ -9,6 +9,7 @@ import { DATA_TRANSACTIONS } from "../data/transactions.js";
 document.addEventListener("DOMContentLoaded", (event) => {
   const SIDE_BARE = document.querySelector("#sidebar");
   const MAIN = document.querySelector("#main");
+  const CHART = document.querySelector("#mychart");
   const TRANSACTIONS_LISTE = document.querySelector("#wrapper");
   const AMOUN_TOTAL = document.querySelector("#amountTotal");
   const AMOUN_IN_TOTAL = document.querySelector("#amountInTotal");
@@ -57,9 +58,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
     return select;
   }
+  // prepare
+  function prepareChart(transactions) {
+    let ArrayLabelCategory = [];
+    let ArraydataCategory = [];
+    let transactionsfiltred = [];
+    transactions.forEach(function (item) {
+      ArrayLabelCategory.push(item.category);
+      //data pour le graphe
+      // 1.Filtrer les transactions par category
+      transactionsfiltred = filterByCategory(item.category.categoryName);
+      // 2.Faire la somme des montants
+      // 3.afficher le graphe
+      // transactionsfiltred = filterByCategory(item.category.categoryName);
+      // ArraydataCategory.push(item.amount);
+    });
+    CHART.remove();
+    let chart = document.createElement("canvas");
+    chart.setAttribute("id", "mychart");
+    document.getElementById("graphParent").appendChild(chart);
+    showChart(ArrayLabelCategory, ArraydataCategory);
+  }
   //AFFICHE LES TRANSACTION
   function showTransactions(transactions) {
     sumTotalTransactions(transactions);
+    prepareChart(transactions);
+
     TRANSACTIONS_LISTE.removeChild(TRANSACTIONS_LISTE.firstChild);
     let arrayTransactionsHtml = document.createElement("div");
     transactions.forEach(function (item) {
