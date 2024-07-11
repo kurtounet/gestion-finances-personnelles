@@ -1,5 +1,6 @@
 
 body
+    font-family: 'Roboto', sans-serif
     margin: 0
     padding: 0
     header
@@ -10,6 +11,15 @@ body
 
     main
         display: flex
+
+        .amountIn
+
+            color: blue
+            display: flex
+        .amountOut
+            color: red
+            display: flex
+        .amountTotal
 
         aside
             nav
@@ -33,6 +43,15 @@ body
             flex-direction: column
             width: 100%
             padding: 10px
+            section#Amount
+                display: flex
+                justify-content: space-around
+                #amountIn
+                    color: blue
+                #amountOut
+                    color: red
+                #amountTotal
+                    color: green
 
             section#section-filter
                 background-color: rgb(89, 87, 180)

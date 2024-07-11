@@ -16,12 +16,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var SIDE_BARE = document.querySelector("#sidebar");
   var MAIN = document.querySelector("#main");
   var TRANSACTIONS_LISTE = document.querySelector("#wrapper");
+  var AMOUN_TOTAL = document.querySelector("#amountTotal");
+  var AMOUN_IN_TOTAL = document.querySelector("#amountInTotal");
+  var AMOUN_OUT_TOTAL = document.querySelector("#amountOutTotal");
   var itemTransactionDate = document.querySelector("#itemTransactionDate");
   var selectedCount = 0;
   var selectFilterDate = document.querySelector("#filterDate");
   var SELECT_FILTER_CATEGORY = document.querySelector("#filterCategory"); //selectFilterCategory = document.querySelector("#filterCategory");
 
-  var selectFilterSubCategory = document.querySelector("#filterSubCategory"); // CREATIONDE LA COLLECTION DES COMPTES
+  var selectFilterSubCategory = document.querySelector("#filterSubCategory");
+  var globaleTotalDebit = 0;
+  var globaleTotalCredit = 0;
+  var globalTotal = 0; // CREATIONDE LA COLLECTION DES COMPTES
 
   var ArrayCount = [];
 
@@ -46,8 +52,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var transactionCountSelected = ArrayCount[selectedCount].transactions;
     var transactionsfiltred = transactionCountSelected.filter(function (transactionCountSelected) {
       return transactionCountSelected.category === categoryName;
-    });
-    console.log(transactionsfiltred);
+    }); //console.log(transactionsfiltred);
+
     return transactionsfiltred;
   } //charge les filtres
 
@@ -60,24 +66,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
       select.appendChild(opt);
     });
     return select;
-  } //Affiche les transactions
+  } //AFFICHE LES TRANSACTION
 
 
   function showTransactions(transactions) {
-    var arrayTransactions = document.createElement("div");
-    transactions.forEach(function (item) {
-      console.log(item);
-      arrayTransactions.appendChild((0, _function.CreateTransaction)(item)); //console.log(Object.values(transaction));
-      // arrayTransaction.push(Object.values(transaction));
-    });
+    sumTotalTransactions(transactions);
     TRANSACTIONS_LISTE.removeChild(TRANSACTIONS_LISTE.firstChild);
-    TRANSACTIONS_LISTE.appendChild(arrayTransactions);
-    /*
-    new gridjs.Grid({
-      columns: ["id", "date", "catégorie", "sous category", "Débit", "Crédit"],
-      data: arrayTransaction,
-    }).render(document.getElementById("wrapper"));
-    */
+    var arrayTransactionsHtml = document.createElement("div");
+    transactions.forEach(function (item) {
+      //console.log(item);
+      arrayTransactionsHtml.appendChild((0, _function.CreateTransaction)(item));
+    });
+    TRANSACTIONS_LISTE.appendChild(arrayTransactionsHtml);
+    AMOUN_TOTAL.innerHTML = globalTotal;
+    AMOUN_IN_TOTAL.innerHTML = globaleTotalCredit;
+    AMOUN_OUT_TOTAL.innerHTML = globaleTotalDebit;
   } //INITIALISATION
 
 
@@ -92,24 +95,55 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     showTransactions(ArrayCount[selectedCount].transactions);
   }
+
+  function filterTransactionsByCategory() {
+    var selectedIndex = SELECT_FILTER_CATEGORY.value;
+    /* A FAIRE
+    selectFilterSubCategory = loadSelectFilter(
+      selectFilterSubCategory,
+      DATA_CATEGORIES[selectedIndex]["subcategories"]
+    );*/
+
+    var transactionsfiltred;
+
+    if (selectedIndex === "0") {
+      transactionsfiltred = ArrayCount[selectedCount].transactions;
+    } else {
+      transactionsfiltred = filterByCategory(_categories.DATA_CATEGORIES[selectedIndex].libelle);
+    } //console.log(transactionsfiltred);
+
+
+    showTransactions(transactionsfiltred);
+  }
+
+  function sumTotalTransactions(transactions) {
+    globaleTotalDebit = 0;
+    globaleTotalCredit = 0;
+    globalTotal = 0;
+    transactions.forEach(function (item) {
+      globaleTotalDebit += item.debit;
+      globaleTotalCredit += item.credit;
+      console.log("Débit", item.debit, "Crédit:", item.credit);
+    });
+    globalTotal = globaleTotalCredit - globaleTotalDebit; //arrayTransactions.transactions.credit;
+  }
   /************************MAIN****************************/
 
 
   init();
   /********************EVENT LISTENER **********************/
 
-  SELECT_FILTER_CATEGORY.addEventListener("change", function () {
-    var selectedIndex = SELECT_FILTER_CATEGORY.value;
-    selectFilterSubCategory = loadSelectFilter(selectFilterSubCategory, _categories.DATA_CATEGORIES[selectedIndex]["subcategories"]);
-    var transactionsfiltred = filterByCategory(_categories.DATA_CATEGORIES[selectedIndex]["libelle"]);
-    showTransactions(transactionsfiltred); //console.log(selectedIndex); // selectedValue;
-  });
+  /* ADDLISTERNER FILTER CATEGORIE */
+
+  SELECT_FILTER_CATEGORY.addEventListener("change", filterTransactionsByCategory);
+  /* ADDLISTERNER FILTER SUB CATEGORY */
+
   selectFilterSubCategory.addEventListener("change", function () {
-    var selectedValue = selectFilterSubCategory.value;
-    console.log(selectedValue);
+    var selectedValue = selectFilterSubCategory.value; //console.log(selectedValue);
   });
+  /* ADDLISTERNER FILTER DATE */
+
   selectFilterDate.addEventListener("change", function () {
-    var selectedValue = _filterDate.DATA_FILTER_DATE.value;
-    console.log(selectedValue);
+    var selectedValue = _filterDate.DATA_FILTER_DATE.value; //console.log(selectedValue);
   });
 });

@@ -1,3 +1,5 @@
+
+/*
 new gridjs.Grid({
   columns: ["Name", "Email", "Phone Number"],
   data: [
@@ -8,8 +10,14 @@ new gridjs.Grid({
     ["Afshin", "afshin@mail.com", "(353) 22 87 8356"],
   ],
 }).render(document.getElementById("wrapper"));
+*/
 
-
+/*
+    new gridjs.Grid({
+      columns: ["id", "date", "catégorie", "sous category", "Débit", "Crédit"],
+      data: arrayTransaction,
+    }).render(document.getElementById("wrapper"));
+    */
 
 
 

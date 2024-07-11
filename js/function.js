@@ -14,8 +14,9 @@ export function CreateTransaction(transaction) {
   itemTransaction.innerHTML = `
   <p id="itemTransactionDate">${transaction.date}</p>
   <p id="itemTransactionCategory">${transaction.category}</p>
-  <p id="itemTransactionDebit">${transaction.debit}</p>
-  <p id="itemTransactionCredit">${transaction.credit}</p>  
+  <p id="itemTransactionCategory">${transaction.subcategory}</p>
+  <p class="amountOut" id="itemTransactionDebit">${transaction.debit}</p>
+  <p class="amountIn" id="itemTransactionCredit">${transaction.credit}</p>  
   <div class="btn-edit-delete">
     <img
       id=transaction

@@ -8,17 +8,17 @@ var DATA_TRANSACTIONS = [{
   id: 0,
   date: "27/11/1982",
   category: "Alimentation",
-  subcategory: "Auchant",
+  subcategory: "Auchan",
   debit: 64.99,
   credit: 0,
   countId: 1
 }, {
   id: 1,
   date: "27/11/1982",
-  category: "Maison",
+  category: "Salaire",
   subcategory: "élétricité",
-  debit: 64.99,
-  credit: 0,
+  debit: 0,
+  credit: 100000000,
   countId: 0
 }, {
   id: 2,

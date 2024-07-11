@@ -1,4 +1,5 @@
 body {
+  font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -7,6 +8,14 @@ body header {
   height: 50px;
 }
 body main {
+  display: flex;
+}
+body main .amountIn {
+  color: blue;
+  display: flex;
+}
+body main .amountOut {
+  color: red;
   display: flex;
 }
 body main aside nav {
@@ -27,6 +36,19 @@ body main section#mainContent {
   flex-direction: column;
   width: 100%;
   padding: 10px;
+}
+body main section#mainContent section#Amount {
+  display: flex;
+  justify-content: space-around;
+}
+body main section#mainContent section#Amount #amountIn {
+  color: blue;
+}
+body main section#mainContent section#Amount #amountOut {
+  color: red;
+}
+body main section#mainContent section#Amount #amountTotal {
+  color: green;
 }
 body main section#mainContent section#section-filter {
   background-color: #5957b4;
