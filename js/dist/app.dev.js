@@ -15,19 +15,18 @@ var _categories = require("../data/categories.js");
 var _transactions = require("../data/transactions.js");
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  var SIDE_BARE = document.querySelector("#sidebar");
-  var MAIN = document.querySelector("#main");
-  var CHART = document.querySelector("#mychart");
+  // const SIDE_BARE = document.querySelector("#sidebar");
+  // const MAIN = document.querySelector("#main");
+  // const itemTransactionDate = document.querySelector("#itemTransactionDate");
+  var referenceToChart = document.querySelector("#mychart");
   var TRANSACTIONS_LISTE = document.querySelector("#wrapper");
   var AMOUN_TOTAL = document.querySelector("#amountTotal");
   var AMOUN_IN_TOTAL = document.querySelector("#amountInTotal");
   var AMOUN_OUT_TOTAL = document.querySelector("#amountOutTotal");
-  var itemTransactionDate = document.querySelector("#itemTransactionDate");
   var selectedCount = 0;
   var selectFilterDate = document.querySelector("#filterDate");
-  var SELECT_FILTER_CATEGORY = document.querySelector("#filterCategory"); //selectFilterCategory = document.querySelector("#filterCategory");
-
-  var selectFilterSubCategory = document.querySelector("#filterSubCategory");
+  var selectFilterCategory = document.querySelector("#filterCategory");
+  var selectFilterSubcategory = document.querySelector("#filterSubcategory");
   var globaleTotalDebit = 0;
   var globaleTotalCredit = 0;
   var globalTotal = 0; // CREATIONDE LA COLLECTION DES COMPTES
@@ -46,10 +45,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     ArrayCount.push(count);
   });
   /************************FONCTIONS****************************/
-  // Filtre les transactions par date
+  // FILTRE PAR DATE
+  //function filterByDate(date) {}
+  //FILTRE PAR CATEGORIE
 
-
-  function filterByDate(date) {}
 
   function filterByCategory(categoryName) {
     var transactionCountSelected = ArrayCount[selectedCount].transactions;
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }); //console.log(transactionsfiltred);
 
     return transactionsfiltred;
-  } //charge les filtres
+  } //CHARGER LES FILTRES
 
 
   function loadSelectFilter(select, options) {
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       select.appendChild(opt);
     });
     return select;
-  } // prepare
+  } // PREPARE LE GRAPHE
 
 
   function prepareChart(transactions) {
@@ -77,20 +76,45 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var ArraydataCategory = [];
     var transactionsfiltred = [];
     transactions.forEach(function (item) {
-      ArrayLabelCategory.push(item.category); //data pour le graphe
-      // 1.Filtrer les transactions par category
+      ArrayLabelCategory.push(item.subcategory);
 
-      transactionsfiltred = filterByCategory(item.category.categoryName); // 2.Faire la somme des montants
+      if (item.credit < 0) {
+        ArraydataCategory.push(item.credit);
+      } else {
+        ArraydataCategory.push(item.debit);
+      } //data pour le graphe
+      // 1.Filtrer les transactions par category
+      // transactionsfiltred = filterByCategory(item.category.categoryName);
+      // 2.Faire la somme des montants
       // 3.afficher le graphe
       // transactionsfiltred = filterByCategory(item.category.categoryName);
       // ArraydataCategory.push(item.amount);
+
     });
-    CHART.remove();
-    var chart = document.createElement("canvas");
-    chart.setAttribute("id", "mychart");
-    document.getElementById("graphParent").appendChild(chart);
+    /*
+    transactions.forEach(function (item) {
+      ArrayLabelCategory.push(item.category);
+      //data pour le graphe
+      // 1.Filtrer les transactions par category
+      transactionsfiltred = filterByCategory(item.category.categoryName);
+      // 2.Faire la somme des montants
+      // 3.afficher le graphe
+      // transactionsfiltred = filterByCategory(item.category.categoryName);
+      // ArraydataCategory.push(item.amount);
+    });*/
+
+    referenceToChart.remove();
+    console.log("prepareChart");
+    var canvas = document.createElement("canvas");
+    canvas.setAttribute("id", "mychart");
+    document.getElementById("graphParent").appendChild(canvas);
+    referenceToChart = document.querySelector("#mychart"); // Tableau pour les tests
+    //ArrayLabelCategory = ["banane", "pomme", "poire", "cerise"];
+    //ArraydataCategory = [1, 2, 3, 4];
+    // showChart OK
+
     (0, _graph.showChart)(ArrayLabelCategory, ArraydataCategory);
-  } //AFFICHE LES TRANSACTION
+  } //AFFICHE LES TRANSACTIONS
 
 
   function showTransactions(transactions) {
@@ -99,33 +123,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
     TRANSACTIONS_LISTE.removeChild(TRANSACTIONS_LISTE.firstChild);
     var arrayTransactionsHtml = document.createElement("div");
     transactions.forEach(function (item) {
-      //console.log(item);
+      //  console.log(item);
       arrayTransactionsHtml.appendChild((0, _function.CreateTransaction)(item));
     });
     TRANSACTIONS_LISTE.appendChild(arrayTransactionsHtml);
     AMOUN_TOTAL.innerHTML = globalTotal;
     AMOUN_IN_TOTAL.innerHTML = globaleTotalCredit;
     AMOUN_OUT_TOTAL.innerHTML = globaleTotalDebit;
-  } //INITIALISATION
-
-
-  function init() {
-    selectFilterDate = loadSelectFilter(selectFilterDate, _filterDate.DATA_FILTER_DATE);
-    SELECT_FILTER_CATEGORY = loadSelectFilter(SELECT_FILTER_CATEGORY, _categories.DATA_CATEGORIES);
-    /*
-    ArrayCount[0].transactions.forEach(function (item) {
-      createTransaction(item);
-    })
-      */
-
-    showTransactions(ArrayCount[selectedCount].transactions);
   }
 
   function filterTransactionsByCategory() {
-    var selectedIndex = SELECT_FILTER_CATEGORY.value;
+    var selectedIndex = selectFilterCategory.value;
     /* A FAIRE
-    selectFilterSubCategory = loadSelectFilter(
-      selectFilterSubCategory,
+    selectFilterSubcategory = loadSelectFilter(
+      selectFilterSubcategory,
       DATA_CATEGORIES[selectedIndex]["subcategories"]
     );*/
 
@@ -147,10 +158,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
     globalTotal = 0;
     transactions.forEach(function (item) {
       globaleTotalDebit += item.debit;
-      globaleTotalCredit += item.credit;
-      console.log("Débit", item.debit, "Crédit:", item.credit);
+      globaleTotalCredit += item.credit; // console.log("Débit", item.debit, "Crédit:", item.credit);
     });
-    globalTotal = globaleTotalCredit - globaleTotalDebit; //arrayTransactions.transactions.credit;
+    globalTotal = globaleTotalCredit - globaleTotalDebit;
+  } //INITIALISATION
+
+
+  function init() {
+    selectFilterDate = loadSelectFilter(selectFilterDate, _filterDate.DATA_FILTER_DATE);
+    selectFilterCategory = loadSelectFilter(selectFilterCategory, _categories.DATA_CATEGORIES);
+    showTransactions(ArrayCount[selectedCount].transactions);
   }
   /************************MAIN****************************/
 
@@ -160,13 +177,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   /* ADDLISTERNER FILTER CATEGORIE */
 
-  SELECT_FILTER_CATEGORY.addEventListener("change", filterTransactionsByCategory);
-  /* ADDLISTERNER FILTER SUB CATEGORY */
+  selectFilterCategory.addEventListener("change", filterTransactionsByCategory);
+  /* ADDLISTERNER FILTER SUB CATEGORY A FAIRE)*/
+  // selectFilterSubcategory.addEventListener("change", function () {
+  //   let selectedValue = selectFilterSubcategory.value;
+  //   //console.log(selectedValue);
+  // });
 
-  selectFilterSubCategory.addEventListener("change", function () {
-    var selectedValue = selectFilterSubCategory.value; //console.log(selectedValue);
-  });
-  /* ADDLISTERNER FILTER DATE */
+  /* ADDLISTERNER FILTER DATE (A FAIRE)*/
 
   selectFilterDate.addEventListener("change", function () {
     var selectedValue = _filterDate.DATA_FILTER_DATE.value; //console.log(selectedValue);

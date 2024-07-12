@@ -4,12 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.showChart = showChart;
-var MY_CHART = document.getElementById("mychart");
 
 function showChart(ArrayLabelCategory, ArraydataCategory) {
+  var MY_CHART = document.getElementById("mychart");
   console.log("showChart");
   new Chart(MY_CHART, {
-    type: "pie",
+    type: "bar",
     data: {
       labels: ArrayLabelCategory,
       datasets: [{

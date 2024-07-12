@@ -15,10 +15,10 @@ var DATA_TRANSACTIONS = [{
 }, {
   id: 1,
   date: "27/11/1982",
-  category: "Salaire",
-  subcategory: "élétricité",
+  category: "Revenus",
+  subcategory: "Salaire",
   debit: 0,
-  credit: 100000000,
+  credit: 10000,
   countId: 0
 }, {
   id: 2,

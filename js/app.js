@@ -7,18 +7,18 @@ import { DATA_CATEGORIES } from "../data/categories.js";
 import { DATA_TRANSACTIONS } from "../data/transactions.js";
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  const SIDE_BARE = document.querySelector("#sidebar");
-  const MAIN = document.querySelector("#main");
-  const CHART = document.querySelector("#mychart");
+  // const SIDE_BARE = document.querySelector("#sidebar");
+  // const MAIN = document.querySelector("#main");
+  // const itemTransactionDate = document.querySelector("#itemTransactionDate");
+  let referenceToChart = document.querySelector("#mychart");
   const TRANSACTIONS_LISTE = document.querySelector("#wrapper");
   const AMOUN_TOTAL = document.querySelector("#amountTotal");
   const AMOUN_IN_TOTAL = document.querySelector("#amountInTotal");
   const AMOUN_OUT_TOTAL = document.querySelector("#amountOutTotal");
-  const itemTransactionDate = document.querySelector("#itemTransactionDate");
   let selectedCount = 0;
   let selectFilterDate = document.querySelector("#filterDate");
-  let SELECT_FILTER_CATEGORY = document.querySelector("#filterCategory"); //selectFilterCategory = document.querySelector("#filterCategory");
-  let selectFilterSubCategory = document.querySelector("#filterSubCategory");
+  let selectFilterCategory = document.querySelector("#filterCategory");
+  let selectFilterSubcategory = document.querySelector("#filterSubcategory");
   let globaleTotalDebit = 0;
   let globaleTotalCredit = 0;
   let globalTotal = 0;
@@ -36,11 +36,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
 
   /************************FONCTIONS****************************/
-  // Filtre les transactions par date
-  function filterByDate(date) {}
+  // FILTRE PAR DATE
+  //function filterByDate(date) {}
+  //FILTRE PAR CATEGORIE
   function filterByCategory(categoryName) {
     let transactionCountSelected = ArrayCount[selectedCount].transactions;
-
     let transactionsfiltred = transactionCountSelected.filter(
       (transactionCountSelected) =>
         transactionCountSelected.category === categoryName
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //console.log(transactionsfiltred);
     return transactionsfiltred;
   }
-  //charge les filtres
+  //CHARGER LES FILTRES
   function loadSelectFilter(select, options) {
     options.forEach(function (option) {
       let opt = document.createElement("option");
@@ -58,11 +58,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
     return select;
   }
-  // prepare
+  // PREPARE LE GRAPHE
   function prepareChart(transactions) {
     let ArrayLabelCategory = [];
     let ArraydataCategory = [];
     let transactionsfiltred = [];
+
+    transactions.forEach(function (item) {
+      ArrayLabelCategory.push(item.subcategory);
+      if (item.credit < 0) {
+        ArraydataCategory.push(item.credit);
+      } else {
+        ArraydataCategory.push(item.debit);
+      }
+
+      //data pour le graphe
+      // 1.Filtrer les transactions par category
+      // transactionsfiltred = filterByCategory(item.category.categoryName);
+      // 2.Faire la somme des montants
+      // 3.afficher le graphe
+      // transactionsfiltred = filterByCategory(item.category.categoryName);
+      // ArraydataCategory.push(item.amount);
+    });
+
+    /*
     transactions.forEach(function (item) {
       ArrayLabelCategory.push(item.category);
       //data pour le graphe
@@ -72,14 +91,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // 3.afficher le graphe
       // transactionsfiltred = filterByCategory(item.category.categoryName);
       // ArraydataCategory.push(item.amount);
-    });
-    CHART.remove();
-    let chart = document.createElement("canvas");
-    chart.setAttribute("id", "mychart");
-    document.getElementById("graphParent").appendChild(chart);
+    });*/
+
+    referenceToChart.remove();
+    console.log("prepareChart");
+    let canvas = document.createElement("canvas");
+    canvas.setAttribute("id", "mychart");
+    document.getElementById("graphParent").appendChild(canvas);
+    referenceToChart = document.querySelector("#mychart");
+
+    // Tableau pour les tests
+    //ArrayLabelCategory = ["banane", "pomme", "poire", "cerise"];
+    //ArraydataCategory = [1, 2, 3, 4];
+    // showChart OK
     showChart(ArrayLabelCategory, ArraydataCategory);
   }
-  //AFFICHE LES TRANSACTION
+  //AFFICHE LES TRANSACTIONS
   function showTransactions(transactions) {
     sumTotalTransactions(transactions);
     prepareChart(transactions);
@@ -87,8 +114,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     TRANSACTIONS_LISTE.removeChild(TRANSACTIONS_LISTE.firstChild);
     let arrayTransactionsHtml = document.createElement("div");
     transactions.forEach(function (item) {
-      //console.log(item);
-
+      //  console.log(item);
       arrayTransactionsHtml.appendChild(CreateTransaction(item));
     });
 
@@ -98,25 +124,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     AMOUN_OUT_TOTAL.innerHTML = globaleTotalDebit;
   }
 
-  //INITIALISATION
-  function init() {
-    selectFilterDate = loadSelectFilter(selectFilterDate, DATA_FILTER_DATE);
-    SELECT_FILTER_CATEGORY = loadSelectFilter(
-      SELECT_FILTER_CATEGORY,
-      DATA_CATEGORIES
-    );
-    /*
-    ArrayCount[0].transactions.forEach(function (item) {
-      createTransaction(item);
-    })
-      */
-    showTransactions(ArrayCount[selectedCount].transactions);
-  }
   function filterTransactionsByCategory() {
-    let selectedIndex = SELECT_FILTER_CATEGORY.value;
+    let selectedIndex = selectFilterCategory.value;
     /* A FAIRE
-    selectFilterSubCategory = loadSelectFilter(
-      selectFilterSubCategory,
+    selectFilterSubcategory = loadSelectFilter(
+      selectFilterSubcategory,
       DATA_CATEGORIES[selectedIndex]["subcategories"]
     );*/
     let transactionsfiltred;
@@ -137,26 +149,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
     transactions.forEach((item) => {
       globaleTotalDebit += item.debit;
       globaleTotalCredit += item.credit;
-      console.log("Débit", item.debit, "Crédit:", item.credit);
+      // console.log("Débit", item.debit, "Crédit:", item.credit);
     });
     globalTotal = globaleTotalCredit - globaleTotalDebit;
+  }
 
-    //arrayTransactions.transactions.credit;
+  //INITIALISATION
+  function init() {
+    selectFilterDate = loadSelectFilter(selectFilterDate, DATA_FILTER_DATE);
+    selectFilterCategory = loadSelectFilter(
+      selectFilterCategory,
+      DATA_CATEGORIES
+    );
+
+    showTransactions(ArrayCount[selectedCount].transactions);
   }
   /************************MAIN****************************/
   init();
   /********************EVENT LISTENER **********************/
   /* ADDLISTERNER FILTER CATEGORIE */
-  SELECT_FILTER_CATEGORY.addEventListener(
-    "change",
-    filterTransactionsByCategory
-  );
-  /* ADDLISTERNER FILTER SUB CATEGORY */
-  selectFilterSubCategory.addEventListener("change", function () {
-    let selectedValue = selectFilterSubCategory.value;
-    //console.log(selectedValue);
-  });
-  /* ADDLISTERNER FILTER DATE */
+  selectFilterCategory.addEventListener("change", filterTransactionsByCategory);
+  /* ADDLISTERNER FILTER SUB CATEGORY A FAIRE)*/
+  // selectFilterSubcategory.addEventListener("change", function () {
+  //   let selectedValue = selectFilterSubcategory.value;
+  //   //console.log(selectedValue);
+  // });
+  /* ADDLISTERNER FILTER DATE (A FAIRE)*/
   selectFilterDate.addEventListener("change", function () {
     let selectedValue = DATA_FILTER_DATE.value;
     //console.log(selectedValue);

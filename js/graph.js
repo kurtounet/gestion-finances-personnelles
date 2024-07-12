@@ -1,8 +1,8 @@
-const MY_CHART = document.getElementById("mychart");
 export function showChart(ArrayLabelCategory, ArraydataCategory) {
+  const MY_CHART = document.getElementById("mychart");
   console.log("showChart");
   new Chart(MY_CHART, {
-    type: "pie",
+    type: "bar",
     data: {
       labels: ArrayLabelCategory,
       datasets: [
